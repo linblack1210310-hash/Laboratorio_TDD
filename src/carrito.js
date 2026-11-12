@@ -1,7 +1,8 @@
-// Laboratorio TDD: carrito de compras
-// Escribe aquí el código SOLO después de tener una prueba en rojo.
+
 
 const IVA = 0.19;
+const COSTO_ENVIO = 12000;
+const ENVIO_GRATIS_DESDE = 150000;
 
 const CUPONES = {
   DESC10: 0.10,
@@ -66,8 +67,13 @@ export class Carrito {
     return Math.round(this.baseGravable() * IVA);
   }
 
+  envio() {
+    if (this.productos.length === 0) return 0;
+    return this.baseGravable() >= ENVIO_GRATIS_DESDE ? 0 : COSTO_ENVIO;
+  }
+
   total() {
-    return this.baseGravable() + this.iva();
+    return this.baseGravable() + this.iva() + this.envio();
   }
 
   resumen() {
@@ -75,6 +81,7 @@ export class Carrito {
       subtotal: this.subtotal(),
       descuento: this.descuento(),
       iva: this.iva(),
+      envio: this.envio(),
       total: this.total(),
     };
   }
